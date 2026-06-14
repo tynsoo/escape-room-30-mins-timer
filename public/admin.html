@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Timer Control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Timer Control Panel</h1>
+
+<div id="timer">30:00</div>
+
+<button onclick="startTimer()">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="resumeTimer()">Resume</button>
+<button onclick="resetTimer()">Reset</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
