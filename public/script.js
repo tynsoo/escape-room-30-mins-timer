@@ -7,46 +7,27 @@ const warningElement = document.getElementById("warning");
 
 let announcedTimes = new Set();
 
-const checkpoints = {
-    1800: "Attention participants. Thirty minutes remain before total system lockdown.",
-    1200: "Security protocols are failing. Twenty minutes remain.",
-    900: "Warning. System corruption spreading. Fifteen minutes remain.",
-    600: "Critical alert. Ten minutes remain until containment failure.",
-    300: "Emergency condition detected. Five minutes remain.",
-    60: "Final warning. One minute remains before irreversible shutdown.",
-    0: "System failure. Access terminated."
+// Penalty sound
+const penaltyAudio = new Audio("/audio/penalty.mp3");
+
+// Time announcement audio files
+const announcements = {
+    1800: new Audio("/audio/30min.mp3"),
+    1200: new Audio("/audio/20min.mp3"),
+    900: new Audio("/audio/15min.mp3"),
+    600: new Audio("/audio/10min.mp3"),
+    300: new Audio("/audio/5min.mp3"),
+    60: new Audio("/audio/1min.mp3")
 };
 
-function announce(message) {
+socket.on("penaltyApplied", () => {
 
-    speechSynthesis.cancel();
+    penaltyAudio.pause();
+    penaltyAudio.currentTime = 0;
 
-    const speech = new SpeechSynthesisUtterance(message);
-
-    speech.rate = 0.9;
-    speech.pitch = 0.8;
-    speech.volume = 1;
-
-    speechSynthesis.speak(speech);
-}
-
-const audioButton =
-    document.getElementById("enableAudio");
-
-if (audioButton) {
-
-    audioButton.addEventListener("click", () => {
-
-        announce("Audio system online.");
-
-        audioButton.style.display = "none";
+    penaltyAudio.play().catch(err => {
+        console.log("Penalty audio blocked:", err);
     });
-
-}
-
-socket.on("penaltyApplied", (message) => {
-
-    announce(message);
 
 });
 
@@ -87,16 +68,19 @@ socket.on("timerUpdate", (data) => {
         timerElement.classList.add("critical");
     }
 
+    // Time announcements
     if (
-        checkpoints[data.remaining] &&
+        announcements[data.remaining] &&
         !announcedTimes.has(data.remaining)
     ) {
 
         announcedTimes.add(data.remaining);
 
-        announce(
-            checkpoints[data.remaining]
-        );
+        announcements[data.remaining]
+            .play()
+            .catch(err => {
+                console.log("Announcement blocked:", err);
+            });
     }
 
     if (data.remaining <= 0) {

@@ -15,38 +15,50 @@ let timerState = {
     endTime: null
 };
 
+// Timer update loop
 setInterval(() => {
+
     if (timerState.running && timerState.endTime) {
 
-        const remaining = Math.max(
+        timerState.remaining = Math.max(
             0,
             Math.ceil((timerState.endTime - Date.now()) / 1000)
         );
 
-        timerState.remaining = remaining;
+        if (timerState.remaining <= 0) {
 
-        if (remaining <= 0) {
+            timerState.remaining = 0;
             timerState.running = false;
             timerState.endTime = null;
         }
 
         io.emit("timerUpdate", timerState);
     }
+
 }, 1000);
 
 io.on("connection", (socket) => {
 
+    console.log("Client connected");
+
     socket.emit("timerUpdate", timerState);
 
+    // START TIMER
     socket.on("start", () => {
+
         timerState.remaining = timerState.duration;
         timerState.running = true;
-        timerState.endTime = Date.now() + timerState.duration * 1000;
+        timerState.endTime =
+            Date.now() + timerState.duration * 1000;
+
         io.emit("timerUpdate", timerState);
     });
 
+    // PAUSE TIMER
     socket.on("pause", () => {
+
         if (timerState.running) {
+
             timerState.remaining = Math.ceil(
                 (timerState.endTime - Date.now()) / 1000
             );
@@ -58,18 +70,27 @@ io.on("connection", (socket) => {
         }
     });
 
+    // RESUME TIMER
     socket.on("resume", () => {
-        if (!timerState.running && timerState.remaining > 0) {
+
+        if (
+            !timerState.running &&
+            timerState.remaining > 0
+        ) {
 
             timerState.running = true;
+
             timerState.endTime =
-                Date.now() + timerState.remaining * 1000;
+                Date.now() +
+                timerState.remaining * 1000;
 
             io.emit("timerUpdate", timerState);
         }
     });
 
+    // RESET TIMER
     socket.on("reset", () => {
+
         timerState.running = false;
         timerState.remaining = timerState.duration;
         timerState.endTime = null;
@@ -77,29 +98,57 @@ io.on("connection", (socket) => {
         io.emit("timerUpdate", timerState);
     });
 
+    // -5 MINUTE PENALTY
     socket.on("minusFiveMinutes", () => {
-      timerState.remaining =
-          Math.max(0, timerState.remaining - 300);
 
-      if (timerState.running) {
+        console.log("5 minute penalty applied");
 
-          timerState.endTime =
-              Date.now() + timerState.remaining * 1000;
-      }
-      io.emit("timerUpdate", timerState);
+        if (timerState.running && timerState.endTime) {
+
+            // Move end time 5 minutes closer
+            timerState.endTime -= 300000;
+
+            timerState.remaining = Math.max(
+                0,
+                Math.ceil(
+                    (timerState.endTime - Date.now()) / 1000
+                )
+            );
+
+            if (timerState.remaining <= 0) {
+
+                timerState.remaining = 0;
+                timerState.running = false;
+                timerState.endTime = null;
+            }
+
+        } else {
+
+            timerState.remaining =
+                Math.max(
+                    0,
+                    timerState.remaining - 300
+                );
+        }
+
+        io.emit("timerUpdate", timerState);
+
+        // Trigger audio announcement
+        io.emit("penaltyApplied");
     });
 
-      io.emit("timerUpdate", timerState);
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
 
-      io.emit(
-          "penaltyApplied",
-          "Incorrect suspect identified. Security countermeasures activated. Five minutes deducted."
-      );
-
-  });
+});
 
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+
+    console.log(
+        `Server running at http://localhost:${PORT}`
+    );
+
 });

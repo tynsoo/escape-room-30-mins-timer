@@ -27,6 +27,17 @@ function resetTimer() {
     socket.emit("reset");
 }
 
+let penaltyCooldown = false;
+
 function minusFiveMinutes() {
+
+    if (penaltyCooldown) return;
+
+    penaltyCooldown = true;
+
     socket.emit("minusFiveMinutes");
+
+    setTimeout(() => {
+        penaltyCooldown = false;
+    }, 1000);
 }
