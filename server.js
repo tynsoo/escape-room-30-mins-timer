@@ -89,16 +89,6 @@ io.on("connection", (socket) => {
       io.emit("timerUpdate", timerState);
     });
 
-      socket.on("minusFiveMinutes", () => {
-      timerState.remaining =
-          Math.max(0, timerState.remaining - 300);
-
-      if (timerState.running) {
-
-          timerState.endTime =
-              Date.now() + timerState.remaining * 1000;
-      }
-
       io.emit("timerUpdate", timerState);
 
       io.emit(
@@ -107,7 +97,6 @@ io.on("connection", (socket) => {
       );
 
   });
-});
 
 const PORT = process.env.PORT || 3000;
 
