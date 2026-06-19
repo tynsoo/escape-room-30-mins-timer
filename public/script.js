@@ -109,3 +109,11 @@ socket.on("timerUpdate", (data) => {
     }
 
 });
+
+socket.on("penaltyApplied", () => {
+
+    announce(
+        "Penalty applied. Five minutes deducted."
+    );
+
+});

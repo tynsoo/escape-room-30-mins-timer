@@ -25,3 +25,7 @@ function resumeTimer() {
 function resetTimer() {
   socket.emit("reset");
 }
+
+function minusFiveMinutes() {
+    socket.emit("minusFiveMinutes");
+}

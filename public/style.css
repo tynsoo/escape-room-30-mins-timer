@@ -269,6 +269,15 @@ body{
     transform:scale(1.05);
 }
 
+.penalty-btn{
+    background:#8b0000;
+    color:white;
+}
+
+.penalty-btn:hover{
+    background:#cc0000;
+}
+
 /* ===================================
    ANIMATIONS
 =================================== */
