@@ -89,7 +89,7 @@ io.on("connection", (socket) => {
       io.emit("timerUpdate", timerState);
     });
 
-    socket.on("minusFiveMinutes", () => {
+      socket.on("minusFiveMinutes", () => {
       timerState.remaining =
           Math.max(0, timerState.remaining - 300);
 
@@ -98,9 +98,15 @@ io.on("connection", (socket) => {
           timerState.endTime =
               Date.now() + timerState.remaining * 1000;
       }
+
       io.emit("timerUpdate", timerState);
-      io.emit("penaltyApplied");
-    });
+
+      io.emit(
+          "penaltyApplied",
+          "Incorrect suspect identified. Security countermeasures activated. Five minutes deducted."
+      );
+
+  });
 });
 
 const PORT = process.env.PORT || 3000;

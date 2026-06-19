@@ -30,25 +30,25 @@ function announce(message) {
     speechSynthesis.speak(speech);
 }
 
-// Enable browser audio
-const audioButton = document.getElementById("enableAudio");
+const audioButton =
+    document.getElementById("enableAudio");
 
 if (audioButton) {
 
     audioButton.addEventListener("click", () => {
 
-        const speech = new SpeechSynthesisUtterance(
-            "Audio system online."
-        );
-
-        speech.volume = 1;
-
-        speechSynthesis.speak(speech);
+        announce("Audio system online.");
 
         audioButton.style.display = "none";
     });
 
 }
+
+socket.on("penaltyApplied", (message) => {
+
+    announce(message);
+
+});
 
 socket.on("timerUpdate", (data) => {
 
@@ -94,7 +94,9 @@ socket.on("timerUpdate", (data) => {
 
         announcedTimes.add(data.remaining);
 
-        announce(checkpoints[data.remaining]);
+        announce(
+            checkpoints[data.remaining]
+        );
     }
 
     if (data.remaining <= 0) {
@@ -107,13 +109,5 @@ socket.on("timerUpdate", (data) => {
             </div>
         `;
     }
-
-});
-
-socket.on("penaltyApplied", () => {
-
-    announce(
-        "Penalty applied. Five minutes deducted."
-    );
 
 });
