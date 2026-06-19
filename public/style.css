@@ -1,23 +1,122 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #111;
-  color: white;
-  margin-top: 80px;
+body{
+    margin:0;
+    background:#050505;
+    color:#ff0000;
+    font-family:Consolas, monospace;
+    overflow:hidden;
 }
 
-h1 {
-  margin-bottom: 30px;
+.overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+    repeating-linear-gradient(
+        transparent 0px,
+        transparent 2px,
+        rgba(255,0,0,.03) 3px
+    );
 }
 
-#timer {
-  font-size: 120px;
-  font-weight: bold;
+.container{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
-button {
-  padding: 12px 20px;
-  margin: 10px;
-  font-size: 18px;
-  cursor: pointer;
+#title{
+    font-size:64px;
+    font-weight:bold;
+    color:#ff2020;
+    text-shadow:
+    0 0 10px red,
+    0 0 20px red,
+    0 0 40px red;
+
+    animation:flicker 2s infinite;
+}
+
+#warning{
+    margin-top:20px;
+    font-size:24px;
+    letter-spacing:3px;
+}
+
+.info{
+    margin-top:30px;
+    font-size:20px;
+    color:#aaa;
+}
+
+.status{
+    font-size:42px;
+    color:#ff4444;
+    margin-bottom:10px;
+}
+
+#integrity{
+    font-size:50px;
+    color:#ff6666;
+}
+
+#timer{
+    margin-top:25px;
+    font-size:160px;
+    font-weight:bold;
+
+    text-shadow:
+    0 0 15px red,
+    0 0 35px red,
+    0 0 60px red;
+}
+
+.warning{
+    color:orange;
+}
+
+.critical{
+    animation:flash .5s infinite;
+}
+
+.failure{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+
+    color:red;
+    font-size:70px;
+    text-align:center;
+
+    text-shadow:
+    0 0 20px red,
+    0 0 50px red;
+}
+
+@keyframes flash{
+    50%{
+        opacity:.2;
+    }
+}
+
+@keyframes flicker{
+    0%,100%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.75;
+    }
+
+    52%{
+        opacity:.35;
+    }
+
+    54%{
+        opacity:1;
+    }
 }
