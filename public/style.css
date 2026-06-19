@@ -242,6 +242,33 @@ body{
     color:white;
 }
 
+.audio-btn{
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    background:#00aa44;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    z-index:9999;
+}
+
+.audio-btn:hover{
+    transform:scale(1.05);
+}
+
 /* ===================================
    ANIMATIONS
 =================================== */
