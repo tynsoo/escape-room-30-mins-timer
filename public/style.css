@@ -1,3 +1,7 @@
+/* ===================================
+   GLOBAL
+=================================== */
+
 body{
     margin:0;
     background:#050505;
@@ -6,10 +10,13 @@ body{
     overflow:hidden;
 }
 
+/* CRT Scanline Effect */
+
 .overlay{
     position:fixed;
     inset:0;
     pointer-events:none;
+
     background:
     repeating-linear-gradient(
         transparent 0px,
@@ -18,59 +25,84 @@ body{
     );
 }
 
+/* ===================================
+   PLAYER DISPLAY SCREEN
+=================================== */
+
 .container{
-    height:100vh;
+    min-height:100vh;
+
     display:flex;
     flex-direction:column;
+
     justify-content:center;
     align-items:center;
+
     text-align:center;
+
+    padding:20px;
+    box-sizing:border-box;
 }
 
 #title{
-    font-size:64px;
+    font-size:clamp(28px, 5vw, 90px);
+
     font-weight:bold;
     color:#ff2020;
+
     text-shadow:
-    0 0 10px red,
-    0 0 20px red,
-    0 0 40px red;
+        0 0 10px red,
+        0 0 20px red,
+        0 0 40px red;
 
     animation:flicker 2s infinite;
 }
 
 #warning{
     margin-top:20px;
-    font-size:24px;
+
+    font-size:clamp(14px, 2vw, 24px);
+
     letter-spacing:3px;
 }
 
 .info{
     margin-top:30px;
-    font-size:20px;
+
+    font-size:clamp(14px, 2vw, 20px);
+
     color:#aaa;
 }
 
 .status{
-    font-size:42px;
+    font-size:clamp(22px, 3vw, 42px);
+
     color:#ff4444;
+
     margin-bottom:10px;
 }
 
 #integrity{
-    font-size:50px;
+    font-size:clamp(28px, 4vw, 50px);
+
     color:#ff6666;
 }
 
 #timer{
     margin-top:25px;
-    font-size:160px;
+
+    font-size:clamp(64px, 15vw, 260px);
+
     font-weight:bold;
 
+    letter-spacing:0.05em;
+
+    max-width:100%;
+
     text-shadow:
-    0 0 15px red,
-    0 0 35px red,
-    0 0 60px red;
+        0 0 15px red,
+        0 0 35px red,
+        0 0 60px red;
 }
 
 .warning{
@@ -81,29 +113,149 @@ body{
     animation:flash .5s infinite;
 }
 
+/* ===================================
+   FAILURE SCREEN
+=================================== */
+
 .failure{
     display:flex;
+
     flex-direction:column;
+
     justify-content:center;
     align-items:center;
+
     height:100vh;
 
     color:red;
-    font-size:70px;
+
+    font-size:clamp(32px, 5vw, 70px);
+
     text-align:center;
 
     text-shadow:
-    0 0 20px red,
-    0 0 50px red;
+        0 0 20px red,
+        0 0 50px red;
 }
 
+/* ===================================
+   ADMIN CONTROL PANEL
+=================================== */
+
+.admin-body{
+    background:#0b0b0b;
+    color:white;
+}
+
+.admin-container{
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:40px 20px;
+
+    text-align:center;
+}
+
+.admin-title{
+    color:#00ff88;
+
+    font-size:clamp(24px, 4vw, 48px);
+
+    margin-bottom:15px;
+
+    text-shadow:
+        0 0 10px #00ff88,
+        0 0 20px #00ff88;
+}
+
+.admin-status{
+    color:#bbbbbb;
+
+    margin-bottom:40px;
+
+    font-size:clamp(14px, 2vw, 20px);
+}
+
+.admin-timer{
+    font-size:clamp(60px, 10vw, 140px);
+
+    font-weight:bold;
+
+    color:white;
+
+    margin-bottom:50px;
+
+    text-shadow:
+        0 0 15px red,
+        0 0 40px red;
+}
+
+.button-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, minmax(180px, 250px));
+
+    justify-content:center;
+
+    gap:25px;
+}
+
+.admin-btn{
+    border:none;
+
+    padding:20px;
+
+    font-size:clamp(18px, 2vw, 28px);
+
+    font-weight:bold;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.admin-btn:hover{
+    transform:scale(1.05);
+}
+
+.start-btn{
+    background:#00aa44;
+    color:white;
+}
+
+.pause-btn{
+    background:#ff8800;
+    color:white;
+}
+
+.resume-btn{
+    background:#0066ff;
+    color:white;
+}
+
+.reset-btn{
+    background:#cc0000;
+    color:white;
+}
+
+/* ===================================
+   ANIMATIONS
+=================================== */
+
 @keyframes flash{
+
     50%{
         opacity:.2;
     }
+
 }
 
 @keyframes flicker{
+
     0%,100%{
         opacity:1;
     }
@@ -119,4 +271,67 @@ body{
     54%{
         opacity:1;
     }
+
+}
+
+/* ===================================
+   TABLETS
+=================================== */
+
+@media (max-width: 768px){
+
+    .container{
+        padding:20px;
+    }
+
+    #warning{
+        letter-spacing:1px;
+    }
+
+    .button-grid{
+        grid-template-columns:1fr;
+
+        width:100%;
+
+        max-width:400px;
+
+        margin:auto;
+    }
+
+    .admin-btn{
+        width:100%;
+    }
+
+}
+
+/* ===================================
+   SMALL PHONES
+=================================== */
+
+@media (max-width: 480px){
+
+    .container{
+        padding:15px;
+    }
+
+    #title{
+        line-height:1.2;
+    }
+
+    .admin-container{
+        padding:20px;
+    }
+
+}
+
+/* ===================================
+   PROJECTORS / TVs
+=================================== */
+
+@media (min-width: 1600px){
+
+    #timer{
+        font-size:260px;
+    }
+
 }
